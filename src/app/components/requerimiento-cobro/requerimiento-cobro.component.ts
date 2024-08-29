@@ -39,13 +39,17 @@ export class RequerimientoCobroComponent implements OnInit {
     fechaUltPago: '27/Sept/2011',
     meses: '133',
     adeudo: 141306.43,
+    adeudo_letra:'asdasdasdasd',
+    meses_letra: ''
   };
 
   formAlta: Alta = {
     nombre: '',
     numero_cuenta:'',
     adeudo: '',
-    numero_folio:''
+    numero_folio:'',
+    adeudo_letra: '',
+    meses_letra:''
   }
 
   constructor(
@@ -85,16 +89,20 @@ export class RequerimientoCobroComponent implements OnInit {
   }
 
   getDatos(id: number) {
+
     this._documentService.postAlta(this.formAlta).subscribe((data)=>{
       this.usuario.id = data.id
     })  
+
     this._documentService.getToma(id).subscribe((data) => {
 
       this.formAlta = {
         nombre: data.usuario.nombre,
         numero_cuenta: data.usuario.cuenta,
         adeudo: String(data.usuario.saldo),
-        numero_folio: '1'
+        adeudo_letra: String(data.recibos.TotalPagarLetra),
+        numero_folio: '1',
+        meses_letra:''
       }
       this.usuario.name = data.usuario.nombre;
       this.usuario.calle = data.usuario.direccion;
@@ -103,6 +111,7 @@ export class RequerimientoCobroComponent implements OnInit {
       this.usuario.fechaUltPago = data.usuario.fechaUltimoPago;
       this.usuario.meses = data.usuario.mesesAdeudo;
       this.usuario.adeudo = data.usuario.saldo;
+      this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
 
       this.codigoQr = data.usuario.nombre;
       
@@ -146,18 +155,19 @@ export class RequerimientoCobroComponent implements OnInit {
         ['Calle y número:', `${this.usuario.calle  }` ],
         ['Municipio:', `${this.usuario.municipio  }`],
         ['Número de Contrato o Número de Cuenta:', `${this.usuario.noCta  }`],
-      ],
+/*         ['Número de Contrato o Número de Cuenta:', `${this.usuario.adeudo_letra  }`],
+ */      ],
     })
 
     doc.addImage(imageUrl, 'JPEG', 130, 5, 55, 23);
-    doc.addImage(imageUrl2, 'JPEG', 25, 7, 20, 20);
+    doc.addImage(imageUrl2, 'JPEG', 25, 7, 24, 24);
     doc.addImage(imageUrl3, 'JPEG', 15, 275, 175, 15);
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(6);
 
-    doc.text('"AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 50, 36 );
-    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 62, 41 );
+    doc.text('"AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 50, 38 );
+    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 64, 41 );
 
     doc.setFontSize(10);
     doc.text('', 137, 47 );
@@ -243,13 +253,16 @@ export class RequerimientoCobroComponent implements OnInit {
 
 
     doc.addImage(imageUrl, 'JPEG', 130, 10, 55, 23);
-    doc.addImage(imageUrl2, 'JPEG', 25, 12, 20, 20);
+    doc.addImage(imageUrl2, 'JPEG', 25, 12, 24, 24);
+    doc.addImage(imageUrl3, 'JPEG', 15, 275, 175, 15);
+
+    
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(6);
 
-    doc.text('"AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 50, 40 );
-    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 62, 43 );
+    doc.text('"AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 48, 42 );
+    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 62, 45 );
 
 
     doc.setFontSize(10);

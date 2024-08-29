@@ -37,13 +37,18 @@ export class CartaInvitacionComponent {
     fechaUltPago: '27/Sept/2011',
     meses: '133',
     adeudo: 141306.43,
+    adeudo_letra:'',
+    meses_letra:''
   };
 
   formAlta: Alta = {
     nombre: '',
     numero_cuenta:'',
     adeudo: '',
-    numero_folio:''
+    numero_folio:'',
+    adeudo_letra: '',
+    meses_letra:''
+
   }
 
   constructor(
@@ -92,7 +97,9 @@ export class CartaInvitacionComponent {
         nombre: data.usuario.nombre,
         numero_cuenta: data.usuario.cuenta,
         adeudo: String(data.usuario.saldo),
-        numero_folio: '1'
+        adeudo_letra: String(data.usuario.saldo),
+        numero_folio: '1',
+        meses_letra:''
       }
       this.usuario.name = data.usuario.nombre;
       this.usuario.calle = data.usuario.direccion;
@@ -148,14 +155,14 @@ export class CartaInvitacionComponent {
     })
 
     doc.addImage(imageUrl, 'JPEG', 130, 5, 55, 23);
-    doc.addImage(imageUrl2, 'JPEG', 25, 7, 20, 20);
+    doc.addImage(imageUrl2, 'JPEG', 25, 7, 24, 24);
     doc.addImage(imageUrl3, 'JPEG', 15, 275, 175, 15);
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(6);
 
-    doc.text('"2024, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 33 );
-    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 36 );
+    doc.text('"2024, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 35 );
+    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 38 );
 
     doc.setFontSize(10);
     doc.text('', 137, 47 );

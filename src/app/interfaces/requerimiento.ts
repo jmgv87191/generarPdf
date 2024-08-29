@@ -8,7 +8,8 @@ export interface Usuario {
     fechaUltPago: string,
     meses:string,
     adeudo:number,
-
+    adeudo_letra:string,
+    meses_letra: string,
 }
 
 export interface Login{
@@ -26,7 +27,8 @@ export interface Alta{
     numero_cuenta: string;
     adeudo: string;
     numero_folio:string;
-
+    adeudo_letra: string;
+    meses_letra: string;
 }
 
 export interface RespuestaAlta{

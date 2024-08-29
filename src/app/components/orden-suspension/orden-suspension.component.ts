@@ -8,6 +8,7 @@ import { FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angula
 import { CommonModule } from '@angular/common';
 import { DocumentosService } from '../../services/documentos.service';
 import { QRCodeModule } from 'angularx-qrcode';
+import { NumeroATextoService } from '../../services/numero-atexto.service';
 
 @Component({
   selector: 'app-orden-suspension',
@@ -29,6 +30,7 @@ export class OrdenSuspensionComponent {
   mensajeDescifrado: string = '';
   dayOfMonth: string;
   monthName: string;
+  cantidadEnTextoMeses!: string;
 
   usuario: Usuario = {
     id: 3,
@@ -39,19 +41,23 @@ export class OrdenSuspensionComponent {
     fechaUltPago: '27/Sept/2011',
     meses: '133',
     adeudo: 141306.43,
+    adeudo_letra: '141306.43',
+    meses_letra: ''
   };
 
   formAlta: Alta = {
     nombre: '',
     numero_cuenta:'',
     adeudo: '',
-    numero_folio:''
+    numero_folio:'',
+    adeudo_letra: '',
+    meses_letra: ''
   }
 
   constructor(
     private _documentService: DocumentosService,
-    private fb: FormBuilder
-
+    private fb: FormBuilder,
+    private numeroATextoService: NumeroATextoService
   ){
     this.form = this.fb.group({
       cveusu: ['11030031', Validators.required]
@@ -67,7 +73,6 @@ export class OrdenSuspensionComponent {
   ngOnInit(): void {
     console.log(this.dayOfMonth)
     console.log(this.monthName)
-
   }
 
   getDayOfMonth(date: Date): string {
@@ -90,11 +95,14 @@ export class OrdenSuspensionComponent {
     })  
     this._documentService.getToma(id).subscribe((data) => {
 
+
       this.formAlta = {
         nombre: data.usuario.nombre,
         numero_cuenta: data.usuario.cuenta,
         adeudo: String(data.usuario.saldo),
-        numero_folio: '1'
+        numero_folio: '1',
+        adeudo_letra: String(data.usuario.saldo),
+        meses_letra: String(this.cantidadEnTextoMeses)
       }
       this.usuario.name = data.usuario.nombre;
       this.usuario.calle = data.usuario.direccion;
@@ -103,9 +111,20 @@ export class OrdenSuspensionComponent {
       this.usuario.fechaUltPago = data.usuario.fechaUltimoPago;
       this.usuario.meses = data.usuario.mesesAdeudo;
       this.usuario.adeudo = data.usuario.saldo;
+      this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
 
+      this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
+      console.log(this.cantidadEnTextoMeses)
+      console.log( data.usuario.meses )
+
+      
+      this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
+
+    
       this.codigoQr = data.usuario.nombre;
       
+
+
         this.generatePDF(this.usuario);
     });
   }
@@ -150,14 +169,14 @@ export class OrdenSuspensionComponent {
     })
 
     doc.addImage(imageUrl, 'JPEG', 130, 5, 55, 23);
-    doc.addImage(imageUrl2, 'JPEG', 25, 7, 20, 20);
+    doc.addImage(imageUrl2, 'JPEG', 25, 7, 24, 24);
     doc.addImage(imageUrl3, 'JPEG', 15, 275, 175, 15);
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(6);
 
-    doc.text('"2024, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 33 );
-    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 36 );
+    doc.text('"2024, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 35 );
+    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 38 );
 
     doc.setFontSize(10);
     doc.text('', 137, 47 );
@@ -214,8 +233,8 @@ export class OrdenSuspensionComponent {
     
     doc.text('De acuerdo en lo señalado en el párrafo anterior y al no existir documentos o registro electrónico que', 25, 220 );
     doc.text('acredite el pago de los derechos por los Servicios Públicos en materia de Agua Potable, Alcantarillado', 25, 225 );
-    doc.text('y Saneamiento en 148 (CIENTO CUARENTA Y OCHO) meses, lo cual equivale a la cantidad de', 30, 230 );
-    doc.text('$165,216.23 (CIENTO SESENTA Y CINCO MIL DOSCIENTOS DIESISEIS PESOS 23/100 m.n.), situación', 23, 235 );
+    doc.text(`y Saneamiento en ${this.usuario.meses} ( ${this.usuario.meses_letra} ) meses, lo cual equivale a la cantidad de`, 30, 230 );
+    doc.text(`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), situación`, 23, 235 );
 
     doc.text('por lo cual se generó la presente orden para realizar la SUSPENSIÓN DEL SERVICIO DE AGUA POTABLE', 19, 240 );
     doc.text('Y ALCANTARILLADO, hasta que se cubra o regularice la situación de adeudo ante este Organismo', 27, 245 );
@@ -228,13 +247,15 @@ export class OrdenSuspensionComponent {
 
 
     doc.addImage(imageUrl, 'JPEG', 130, 10, 55, 23);
-    doc.addImage(imageUrl2, 'JPEG', 25, 12, 20, 20);
+    doc.addImage(imageUrl2, 'JPEG', 25, 12, 24, 24);
+    doc.addImage(imageUrl3, 'JPEG', 15, 275, 175, 15);
+
     doc.setTextColor(0, 0, 0);
 
     doc.setFontSize(6);
 
-    doc.text('AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 50, 40 );
-    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 62, 43 );
+    doc.text('AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR”', 50, 42 );
+    doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 62, 45 );
 
     doc.setFontSize(10);
     doc.text(`No. de oficio: DG/DC/OS/${usuario.id}/2024.`, 135, 60 );
@@ -296,5 +317,8 @@ export class OrdenSuspensionComponent {
     this.mensajeDescifrado = atob(mensaje);
     return console.log(this.mensajeDescifrado)
   }
+
+
+  
 
 }
