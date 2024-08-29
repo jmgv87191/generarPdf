@@ -1,0 +1,17 @@
+<div class="row">
+    
+    <div class="col-3">
+        <app-side-bar></app-side-bar>
+    </div>
+
+
+    <div class="col" >
+        <form [formGroup]="form" (ngSubmit)="sendCveusu()">
+            <input formControlName="cveusu" type="text">
+            <button type="submit">Generar documentos</button>
+        </form>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="cont_login">
+
+        <form class="cont_form"  action="" [formGroup]="form" (ngSubmit)="onLogin(form.value)" >
+            
+            <div class="form-floating mb-3 cont_input">
+                <input formControlName="email" type="text" class="form-control" id="floatingInput" placeholder="Usuario">
+                <label for="floatingInput"> Usuario </label>
+            </div>
+
+            <div class="form-floating cont_input">
+                <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" >Enviar</button>
+        </form>
+        
+    </div>
+</div>
