@@ -115,7 +115,6 @@ export class OrdenSuspensionComponent {
 
       this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
       console.log(this.cantidadEnTextoMeses)
-      console.log( data.usuario.meses )
 
       
       this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
@@ -214,31 +213,45 @@ export class OrdenSuspensionComponent {
     doc.text('', 80, 122 );
     doc.setFont("helvetica", "normal");
 
-    doc.text('Por este medio y con fundamento en los artículos 14, 16, 27 párrafo quinto, 31 fracción IV, y 115', 29, 130 );
-    doc.text('fracción III, inciso a), fracción IV inciso c) de la Constitución Política de los Estados Unidos Mexicanos,', 25, 135 );
-    doc.text('al artículo 148 fracción IX inciso a), fracción XVI y 154 fracción VIII de la Constitución Política del Estado', 23, 140 );
-    doc.text('Libre y Soberano de Baja California Sur, artículo 1, 2, 3, 21, 24, 25, 27, 97, 116 y 119 de la Ley de Aguas ', 22, 145 );
-    doc.text('del Estado de Baja California Sur, así como el artículo 1, 2 Fracción X del Decreto de creación, con', 27, 150 );
-    doc.text('fecha 30 de junio de 2024, Boletín Oficial del Gobierno del Estado de Baja California Sur, No. 47, tomo ', 25, 155 );
-    doc.text('LI, Contrato para la Prestación del Servicio de Agua Potable que FACULTA a este Organismo Operador', 24, 160 );
-    doc.text('Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de la Paz, Baja California Sur', 27, 165 );
-    doc.text('(OOMSAPAS) a suspender por la falta de pago por la prestación de los servicios de agua potable y ', 27, 170 );
-    doc.text('alcantarillado, en el caso de incumplimiento por parte del usuario dentro de los 3 (tres) días', 33, 175 );
-    doc.text('posteriores a la fecha en que fue notificado el importe del consumo correspondiente, basándose en ', 27, 180 );
-    doc.text('la Clausula Segunda del Contrato para la Prestación del Servicio de Agua Potable firmado con el', 29, 185 );
-    doc.text('propietario del inmueble (o usuario del servicio). Asimismo, la falta de pago de las cuotas por servicio,', 25, 190 );
-    doc.text('a la fecha de vencimiento, por parte de usuarios no domésticos, FACULTA al Municipio o al prestador', 25, 195 );
-    doc.text('de los servicios para suspender los servicios públicos hasta que se regularice su pago.', 37, 200 );
-    
-    
-    doc.text('De acuerdo en lo señalado en el párrafo anterior y al no existir documentos o registro electrónico que', 25, 220 );
-    doc.text('acredite el pago de los derechos por los Servicios Públicos en materia de Agua Potable, Alcantarillado', 25, 225 );
-    doc.text(`y Saneamiento en ${this.usuario.meses} ( ${this.usuario.meses_letra} ) meses, lo cual equivale a la cantidad de`, 30, 230 );
-    doc.text(`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), situación`, 23, 235 );
+    autoTable(doc, {
+      theme: 'plain',
+      tableWidth: 160,
+      margin: { top: 0, bottom: 0, left: 15 },
+      columnStyles: {
+        0: { cellWidth: 180,halign: 'center' },
+      },
+      styles: {
+        cellPadding: .5, 
+      },
+      body: [
+        ['Por este medio y con fundamento en los artículos 14, 16, 27 párrafo quinto, 31 fracción IV, y 115'  ],
+        ['fracción III, inciso a), fracción IV inciso c) de la Constitución Política de los Estados Unidos Mexicanos,'  ],
+        ['al artículo 148 fracción IX inciso a), fracción XVI y 154 fracción VIII de la Constitución Política del Estado'  ],
+        ['Libre y Soberano de Baja California Sur, artículo 1, 2, 3, 21, 24, 25, 27, 97, 116 y 119 de la Ley de Aguas'  ],
+        ['del Estado de Baja California Sur, así como el artículo 1, 2 Fracción X del Decreto de creación, con'  ],
+        ['fecha 30 de junio de 2024, Boletín Oficial del Gobierno del Estado de Baja California Sur, No. 47, tomo'  ],
+        ['LI, Contrato para la Prestación del Servicio de Agua Potable que FACULTA a este Organismo Operador'  ],
+        ['Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de la Paz, Baja California Sur'  ],
+        ['(OOMSAPAS) a suspender por la falta de pago por la prestación de los servicios de agua potable y'  ],
+        ['alcantarillado, en el caso de incumplimiento por parte del usuario dentro de los 3 (tres) días'  ],
+        ['posteriores a la fecha en que fue notificado el importe del consumo correspondiente, basándose en'  ],
+        ['la Clausula Segunda del Contrato para la Prestación del Servicio de Agua Potable firmado con el'  ],
+        ['propietario del inmueble (o usuario del servicio). Asimismo, la falta de pago de las cuotas por servicio,'  ],
+        ['a la fecha de vencimiento, por parte de usuarios no domésticos, FACULTA al Municipio o al prestador'  ],
+        ['de los servicios para suspender los servicios públicos hasta que se regularice su pago.'  ],
+        [''  ],
+        ['De acuerdo en lo señalado en el párrafo anterior y al no existir documentos o registro electrónico que'  ],
+        ['acredite el pago de los derechos por los Servicios Públicos en materia de Agua Potable, Alcantarillado'  ],
+        [`y Saneamiento en ${this.usuario.meses} ( ${this.usuario.meses_letra} ) meses, lo cual equivale a la cantidad de`],
+        [`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), situación`  ],
+        [ 'por lo cual se generó la presente orden para realizar la SUSPENSIÓN DEL SERVICIO DE AGUA POTABLE' ],
+        [ 'Y ALCANTARILLADO, hasta que se cubra o regularice la situación de adeudo ante este Organismo' ],
+        [ 'Operador' ],
 
-    doc.text('por lo cual se generó la presente orden para realizar la SUSPENSIÓN DEL SERVICIO DE AGUA POTABLE', 19, 240 );
-    doc.text('Y ALCANTARILLADO, hasta que se cubra o regularice la situación de adeudo ante este Organismo', 27, 245 );
-    doc.text('Operador.', 97, 250 );
+      ],
+    })   
+    
+    
     
     
     /* Segunda hoja  */

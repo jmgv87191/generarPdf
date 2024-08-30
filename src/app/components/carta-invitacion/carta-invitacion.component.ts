@@ -8,6 +8,7 @@ import { FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angula
 import { CommonModule } from '@angular/common';
 import { DocumentosService } from '../../services/documentos.service';
 import { QRCodeModule } from 'angularx-qrcode';
+import { NumeroATextoService } from '../../services/numero-atexto.service';
 
 @Component({
   selector: 'app-carta-invitacion',
@@ -16,7 +17,9 @@ import { QRCodeModule } from 'angularx-qrcode';
   templateUrl: './carta-invitacion.component.html',
   styleUrl: './carta-invitacion.component.css'
 })
+
 export class CartaInvitacionComponent {
+
   altura = 160;
   form: FormGroup;
   clveusuIngresada!: number;
@@ -27,6 +30,7 @@ export class CartaInvitacionComponent {
   mensajeDescifrado: string = '';
   dayOfMonth: string;
   monthName: string;
+  cantidadEnTextoMeses!: string;
 
   usuario: Usuario = {
     id: 3,
@@ -53,7 +57,8 @@ export class CartaInvitacionComponent {
 
   constructor(
     private _documentService: DocumentosService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private numeroATextoService: NumeroATextoService
 
   ){
     this.form = this.fb.group({
@@ -108,6 +113,13 @@ export class CartaInvitacionComponent {
       this.usuario.fechaUltPago = data.usuario.fechaUltimoPago;
       this.usuario.meses = data.usuario.mesesAdeudo;
       this.usuario.adeudo = data.usuario.saldo;
+      this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
+
+      this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
+      console.log(this.cantidadEnTextoMeses)
+
+      
+      this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
 
       this.codigoQr = data.usuario.nombre;
       
@@ -144,8 +156,11 @@ export class CartaInvitacionComponent {
     autoTable(doc, {
       theme: 'grid',
       tableWidth: this.altura,
-      margin: { top:65, bottom: 75, left:25, right:0 },
-      columnStyles:{ 0:{cellWidth:  40 } },
+      margin: { top:65, bottom: 35, left:25, right:0 },
+      columnStyles:{ 
+        0: { cellWidth: 40,}, // Alineación a la derecha para la primera columna
+        1: { halign: 'left' } // Alineación a la derecha para la segunda columna
+        },
       body: [
         ['Usuario:', `${this.usuario.name  }` ],
         ['Calle y número:', `${this.usuario.calle  }` ],
@@ -174,54 +189,46 @@ export class CartaInvitacionComponent {
 
     doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 112, 58 );
 
-    autoTable(doc, {
-      theme: 'grid',
-      tableWidth: 160,
-      margin: { bottom: 0, left:25 },
-      columnStyles:{ 0:{cellWidth:  40 } },
-      styles: { fillColor: [255, 255, 255], textColor: [255, 255, 255], lineColor: [255, 255, 255] },
-
-      body: [
-        ['Obligación omitida', `Fecha del último pago`, 'Meses','Adeudo','Plazo para realizar el pago'  ],
-      ],
-    })
 
     autoTable(doc, {
-      theme: 'grid',
+      theme: 'plain',
       tableWidth: 160,
-      margin: { bottom: 0, left:25 },
-      columnStyles:{ 0:{cellWidth:  40 } },
-      styles: { fillColor: [255, 255, 255], textColor: [255, 255, 255], lineColor: [255, 255, 255] },
-
+      margin: { top: 50, bottom: 0, left: 15 },
+      columnStyles: {
+        0: { cellWidth: 180,halign: 'center' },
+      },
+      styles: {
+        cellPadding: .5, 
+      },
       body: [
-        ['Obligación omitida', `Fecha del último pago`, 'Meses','Adeudo','Plazo para realizar el pago'  ],
+        [''  ],
+        [''  ],
+        ['El Organismo Operador Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de La'  ],
+        ['Paz; conocido por sus siglas OOMSAPAS ha identificado en su Sistema Comercial un pasivo de'  ],
+        [`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), de ${this.usuario.meses} meses`  ],
+        ['vencidos por el pago de los servicios de agua potable, alcantarillado y saneamiento.'  ],
+        [''  ],
+        ['Por lo anterior, le hacemos una cordial invitación para acercarse a las oficinas de OOMSAPAS y'  ],
+        ['conocer el monto del adeudo y las alternativas que ofrece el Organismo Operador para realizar el pago'  ],
+        [`de los ${this.usuario.meses} meses identificados, tomando en cuenta sus condiciones de pago.`  ],
+        [''  ],
+        ['En este sentido, lo esperamos a la brevedad en cualquiera de nuestras oficinas ubicadas en Calle Félix'  ],
+        ['Ortega Número 2330 e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California'  ],
+        ['Sur, con el teléfono (612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00'  ],
+        ['a 14:00 hrs. para aclarar o cubrir el adeudo; en el término de 3 días hábiles después de la recepción de'  ],
+        ['la presente invitación.'  ],
+        [''  ],
+        ['En caso de haber realizado el pago total de los meses identificados con adeudo o estar al corriente en'  ],
+        ['los pagos, omitir el presente documento.'  ],
       ],
-    })
+    })   
+    
 
     doc.setFont("helvetica", "bold");
     doc.text('CARTA INVITACIÓN', 90, 112 );
     doc.text('', 80, 122 );
     doc.setFont("helvetica", "normal");
 
-    doc.text('El Organismo Operador Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de La', 27, 130 );
-    doc.text('Paz; conocido por sus siglas OOMSAPAS ha identificado en su Sistema Comercial un pasivo de ', 29, 135 );
-    doc.text('$95,921.73 (NOVENTA Y CINCO MIL NOVECIENTOS VEINTIUN PESOS 731/100M.N.), de 107 meses', 23, 140 );
-    doc.text('vencidos por el pago de los servicios de agua potable, alcantarillado y saneamiento.', 39, 145 );
-
-    doc.text('Por lo anterior, le hacemos una cordial invitación para acercarse a las oficinas de OOMSAPAS y', 29, 155 );
-    doc.text('conocer el monto del adeudo y las alternativas que ofrece el Organismo Operador para realizar el pago', 23, 160 );
-    doc.text('de los 107 meses identificados, tomando en cuenta sus condiciones de pago. ', 45, 165 );
-
-    doc.text('En este sentido, lo esperamos a la brevedad en cualquiera de nuestras oficinas ubicadas en Calle Félix ', 23, 175 );
-    doc.text('Ortega Número 2330 e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California', 23, 180 );
-    doc.text('Sur, con el teléfono (612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00 ', 23, 185 );
-    doc.text('a 14:00 hrs. para aclarar o cubrir el adeudo; en el término de 3 días hábiles después de la recepción de', 24, 190 );
-    doc.text('la presente invitación. ', 87, 195 );
-
-    doc.text('En caso de haber realizado el pago total de los meses identificados con adeudo o estar al corriente en ', 25, 205 );
-    doc.text('los pagos, omitir el presente documento.', 75, 210 );
-    
-    
     doc.text('ATENTAMENTE', 91, 220);
     doc.setFont("helvetica", "bold");
     doc.text('LIC. NEYMA LUNA SALAICES', 80, 240);
@@ -229,9 +236,6 @@ export class CartaInvitacionComponent {
     doc.text('DIRECTORA COMERCIAL DEL ORGANISMO OPERADOR MUNICIPAL DEL SISTEMA DE AGUA', 27, 245);
     doc.text('POTABLE, ALCANTARILLADO Y SANEAMIENTO DE LA PAZ.', 54, 250);
     doc.setFontSize(6);
-/*     doc.text('C.C.P.- C. Carlos Andrés Camargo Lira, Director Comercial. - Para su atención procedente.', 30, 263);
-    doc.text('C.c.p. Archivo.', 30, 265); */
-    
     
     this.mensajeOriginal = this.usuario.name +" "+ this.usuario.adeudo + " "+ this.usuario.noCta
     setTimeout(() => {
