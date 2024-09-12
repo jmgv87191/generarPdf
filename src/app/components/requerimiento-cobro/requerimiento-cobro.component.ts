@@ -69,8 +69,7 @@ export class RequerimientoCobroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.dayOfMonth)
-    console.log(this.monthName)
+
 
   }
 
@@ -116,10 +115,10 @@ export class RequerimientoCobroComponent implements OnInit {
       
       this._documentService.postAlta(this.formAlta).subscribe((data)=>{
         this.usuario.id = data.id
+        this.generatePDF(this.usuario);
       })
 
 
-      this.generatePDF(this.usuario);
 
         
 
@@ -151,8 +150,6 @@ export class RequerimientoCobroComponent implements OnInit {
     const imageUrl3 = '../../../assets/New.jpg'; 
 
     const doc = new jsPDF();
-
-    console.log( this.usuario )
     
     autoTable(doc, {
       theme: 'grid',
@@ -331,7 +328,6 @@ export class RequerimientoCobroComponent implements OnInit {
       this.mensajeOriginal2 =  this.cifrarMensaje(this.mensajeOriginal)
     }, 100);
 
-    console.log( this.cifrarMensaje(  this.mensajeOriginal) )
     setTimeout(() => {
       
       const qrCodeElement = document.querySelector('qrcode canvas') as HTMLCanvasElement;
@@ -355,7 +351,6 @@ export class RequerimientoCobroComponent implements OnInit {
   descifrarMensaje(mensaje:string) {
     // Convertir de Base64 a texto
     this.mensajeDescifrado = atob(mensaje);
-    return console.log(this.mensajeDescifrado)
   }
 
 }

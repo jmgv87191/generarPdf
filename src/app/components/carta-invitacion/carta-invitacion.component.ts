@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { DocumentosService } from '../../services/documentos.service';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NumeroATextoService } from '../../services/numero-atexto.service';
+import { computeMsgId } from '@angular/compiler';
 
 @Component({
   selector: 'app-carta-invitacion',
@@ -33,7 +34,7 @@ export class CartaInvitacionComponent {
   cantidadEnTextoMeses!: string;
 
   usuario: Usuario = {
-    id: 3,
+    id: 0,
     name: 'Juan manuel gutierrez',
     calle: 'andador 3 no revolucionssssssssssssssssssss de 1910 entre sonora y sinalaoa int 4',
     municipio: 'La Paz',
@@ -73,8 +74,7 @@ export class CartaInvitacionComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.dayOfMonth)
-    console.log(this.monthName)
+
   }
 
   getDayOfMonth(date: Date): string {
@@ -95,7 +95,7 @@ export class CartaInvitacionComponent {
 
       
       this._documentService.getToma(id).subscribe((data) => {
-  
+      
         this.formAlta = {
           nombre: data.usuario.nombre,
           numero_cuenta: data.usuario.cuenta,
@@ -106,6 +106,7 @@ export class CartaInvitacionComponent {
         }
 /*         this.formAlta.nombre = data.usuario.nombre;
         this.formAlta.numero_cuenta = data.usuario.cuenta; */
+
         
         this.usuario.name = data.usuario.nombre;
         this.usuario.calle = data.usuario.direccion;
@@ -117,7 +118,6 @@ export class CartaInvitacionComponent {
         this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
   
         this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
-        console.log(this.cantidadEnTextoMeses)
   
         
         this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
@@ -125,19 +125,11 @@ export class CartaInvitacionComponent {
         this.codigoQr = data.usuario.nombre;
         
         this._documentService.postAlta(this.formAlta).subscribe((data)=>{
-          this.usuario.id = data.id
+          this.usuario.id = (data.id)
+          this.generatePDF(this.usuario);
         })
 
-
-        this.generatePDF(this.usuario);
-
-          
-
-
       });
-
-
-
 
   }
 
@@ -168,8 +160,6 @@ export class CartaInvitacionComponent {
     const imageUrl3 = 'assets/New.jpg';
 
     const doc = new jsPDF();
-
-    console.log( this.usuario )
     
     autoTable(doc, {
       theme: 'grid',
@@ -198,7 +188,7 @@ export class CartaInvitacionComponent {
     doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 38 );
 
     doc.setFontSize(10);
-    doc.text('', 137, 47 );usuario.id
+    doc.text('', 137, 47 );
     doc.text(`No. de Folio: DC/CR/CI/${usuario.id}/2024.`, 140, 50 );
     doc.text('Asunto: ', 153, 54 );
     doc.setFont("helvetica", "bold");
@@ -261,7 +251,6 @@ export class CartaInvitacionComponent {
       this.mensajeOriginal2 =  this.cifrarMensaje(this.mensajeOriginal)
     }, 100);
 
-    console.log( this.cifrarMensaje(  this.mensajeOriginal) )
     setTimeout(() => {
       
       const qrCodeElement = document.querySelector('qrcode canvas') as HTMLCanvasElement;
@@ -285,7 +274,6 @@ export class CartaInvitacionComponent {
   descifrarMensaje(mensaje:string) {
     // Convertir de Base64 a texto
     this.mensajeDescifrado = atob(mensaje);
-    return console.log(this.mensajeDescifrado)
   }
 
 }

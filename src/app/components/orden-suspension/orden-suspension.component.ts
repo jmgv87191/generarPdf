@@ -71,8 +71,7 @@ export class OrdenSuspensionComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.dayOfMonth)
-    console.log(this.monthName)
+
   }
 
   getDayOfMonth(date: Date): string {
@@ -114,7 +113,6 @@ export class OrdenSuspensionComponent {
       this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
 
       this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
-      console.log(this.cantidadEnTextoMeses)
 
       
       this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
@@ -123,10 +121,10 @@ export class OrdenSuspensionComponent {
       
       this._documentService.postAlta(this.formAlta).subscribe((data)=>{
         this.usuario.id = data.id
+        this.generatePDF(this.usuario);
       })
 
 
-      this.generatePDF(this.usuario);
 
         
 
@@ -159,7 +157,6 @@ export class OrdenSuspensionComponent {
 
     const doc = new jsPDF();
 
-    console.log( this.usuario )
     
     autoTable(doc, {
       theme: 'grid',
@@ -311,7 +308,6 @@ export class OrdenSuspensionComponent {
       this.mensajeOriginal2 =  this.cifrarMensaje(this.mensajeOriginal)
     }, 100);
 
-    console.log( this.cifrarMensaje(  this.mensajeOriginal) )
     setTimeout(() => {
       
       const qrCodeElement = document.querySelector('qrcode canvas') as HTMLCanvasElement;
@@ -335,7 +331,6 @@ export class OrdenSuspensionComponent {
   descifrarMensaje(mensaje:string) {
     // Convertir de Base64 a texto
     this.mensajeDescifrado = atob(mensaje);
-    return console.log(this.mensajeDescifrado)
   }
 
 
