@@ -75,7 +75,6 @@ export class CartaInvitacionComponent {
   ngOnInit(): void {
     console.log(this.dayOfMonth)
     console.log(this.monthName)
-
   }
 
   getDayOfMonth(date: Date): string {
@@ -93,43 +92,62 @@ export class CartaInvitacionComponent {
   }
 
   getDatos(id: number) {
-    this._documentService.postAlta(this.formAlta).subscribe((data)=>{
-      this.usuario.id = data.id
-    })  
-    this._documentService.getToma(id).subscribe((data) => {
-
-      this.formAlta = {
-        nombre: data.usuario.nombre,
-        numero_cuenta: data.usuario.cuenta,
-        adeudo: String(data.usuario.saldo),
-        adeudo_letra: String(data.usuario.saldo),
-        numero_folio: '1',
-        meses_letra:''
-      }
-      this.usuario.name = data.usuario.nombre;
-      this.usuario.calle = data.usuario.direccion;
-      this.usuario.municipio = data.recibos[0].Ciudad;
-      this.usuario.noCta = data.usuario.cuenta;
-      this.usuario.fechaUltPago = data.usuario.fechaUltimoPago;
-      this.usuario.meses = data.usuario.mesesAdeudo;
-      this.usuario.adeudo = data.usuario.saldo;
-      this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
-
-      this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
-      console.log(this.cantidadEnTextoMeses)
 
       
-      this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
+      this._documentService.getToma(id).subscribe((data) => {
+  
+        this.formAlta = {
+          nombre: data.usuario.nombre,
+          numero_cuenta: data.usuario.cuenta,
+          adeudo: String(data.usuario.saldo),
+          adeudo_letra: String(data.usuario.saldo),
+          numero_folio: 'I',
+          meses_letra:''
+        }
+/*         this.formAlta.nombre = data.usuario.nombre;
+        this.formAlta.numero_cuenta = data.usuario.cuenta; */
+        
+        this.usuario.name = data.usuario.nombre;
+        this.usuario.calle = data.usuario.direccion;
+        this.usuario.municipio = data.recibos[0].Ciudad;
+        this.usuario.noCta = data.usuario.cuenta;
+        this.usuario.fechaUltPago = data.usuario.fechaUltimoPago;
+        this.usuario.meses = data.usuario.mesesAdeudo;
+        this.usuario.adeudo = data.usuario.saldo;
+        this.usuario.adeudo_letra = data.recibos[0].TotalPagarLetra;
+  
+        this.cantidadEnTextoMeses = this.numeroATextoService.numeroATexto(Number(this.usuario.meses)); // Ejemplo
+        console.log(this.cantidadEnTextoMeses)
+  
+        
+        this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
+  
+        this.codigoQr = data.usuario.nombre;
+        
+        this._documentService.postAlta(this.formAlta).subscribe((data)=>{
+          this.usuario.id = data.id
+        })
 
-      this.codigoQr = data.usuario.nombre;
-      
+
         this.generatePDF(this.usuario);
-    });
+
+          
+
+
+      });
+
+
+
+
   }
 
+
+
   sendCveusu() {
+    
     this.clveusuIngresada = this.form.value.cveusu;
     this.getDatos(this.clveusuIngresada);
+    
   }
 
   downloadQRCode() {
@@ -180,7 +198,7 @@ export class CartaInvitacionComponent {
     doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 38 );
 
     doc.setFontSize(10);
-    doc.text('', 137, 47 );
+    doc.text('', 137, 47 );usuario.id
     doc.text(`No. de Folio: DC/CR/CI/${usuario.id}/2024.`, 140, 50 );
     doc.text('Asunto: ', 153, 54 );
     doc.setFont("helvetica", "bold");

@@ -90,20 +90,19 @@ export class RequerimientoCobroComponent implements OnInit {
 
   getDatos(id: number) {
 
-    this._documentService.postAlta(this.formAlta).subscribe((data)=>{
-      this.usuario.id = data.id
-    })  
-
     this._documentService.getToma(id).subscribe((data) => {
 
       this.formAlta = {
         nombre: data.usuario.nombre,
         numero_cuenta: data.usuario.cuenta,
         adeudo: String(data.usuario.saldo),
-        adeudo_letra: String(data.recibos.TotalPagarLetra),
-        numero_folio: '1',
+        adeudo_letra: String(data.usuario.saldo),
+        numero_folio: 'R',
         meses_letra:''
       }
+/*         this.formAlta.nombre = data.usuario.nombre;
+      this.formAlta.numero_cuenta = data.usuario.cuenta; */
+      
       this.usuario.name = data.usuario.nombre;
       this.usuario.calle = data.usuario.direccion;
       this.usuario.municipio = data.recibos[0].Ciudad;
@@ -115,9 +114,19 @@ export class RequerimientoCobroComponent implements OnInit {
 
       this.codigoQr = data.usuario.nombre;
       
-        this.generatePDF(this.usuario);
+      this._documentService.postAlta(this.formAlta).subscribe((data)=>{
+        this.usuario.id = data.id
+      })
+
+
+      this.generatePDF(this.usuario);
+
+        
+
+
     });
-  }
+
+}
 
   sendCveusu() {
     this.clveusuIngresada = this.form.value.cveusu;

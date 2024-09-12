@@ -90,20 +90,20 @@ export class OrdenSuspensionComponent {
   }
 
   getDatos(id: number) {
-    this._documentService.postAlta(this.formAlta).subscribe((data)=>{
-      this.usuario.id = data.id
-    })  
-    this._documentService.getToma(id).subscribe((data) => {
 
+    this._documentService.getToma(id).subscribe((data) => {
 
       this.formAlta = {
         nombre: data.usuario.nombre,
         numero_cuenta: data.usuario.cuenta,
         adeudo: String(data.usuario.saldo),
-        numero_folio: '1',
         adeudo_letra: String(data.usuario.saldo),
-        meses_letra: String(this.cantidadEnTextoMeses)
+        numero_folio: 'S',
+        meses_letra:''
       }
+/*         this.formAlta.nombre = data.usuario.nombre;
+      this.formAlta.numero_cuenta = data.usuario.cuenta; */
+      
       this.usuario.name = data.usuario.nombre;
       this.usuario.calle = data.usuario.direccion;
       this.usuario.municipio = data.recibos[0].Ciudad;
@@ -119,14 +119,21 @@ export class OrdenSuspensionComponent {
       
       this.usuario.meses_letra = String(this.cantidadEnTextoMeses)
 
-    
       this.codigoQr = data.usuario.nombre;
       
+      this._documentService.postAlta(this.formAlta).subscribe((data)=>{
+        this.usuario.id = data.id
+      })
 
 
-        this.generatePDF(this.usuario);
+      this.generatePDF(this.usuario);
+
+        
+
+
     });
-  }
+
+}
 
   sendCveusu() {
     this.clveusuIngresada = this.form.value.cveusu;
