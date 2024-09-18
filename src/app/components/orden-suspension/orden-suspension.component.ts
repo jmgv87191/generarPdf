@@ -40,7 +40,7 @@ export class OrdenSuspensionComponent {
     noCta: '010101.01',
     fechaUltPago: '27/Sept/2011',
     meses: '133',
-    adeudo: 141306.43,
+    adeudo: '141306.43',
     adeudo_letra: '141306.43',
     meses_letra: ''
   };
@@ -185,7 +185,7 @@ export class OrdenSuspensionComponent {
     doc.text('', 137, 47 );
     doc.text(`No. de Folio: DG/DC/OS/${usuario.id}/2024.`, 140, 50 );
     doc.text('Asunto: Orden de Suspensión.', 147, 54 );
-    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 112, 58 );
+    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 105, 58 );
 
     autoTable(doc, {
       theme: 'grid',
@@ -220,38 +220,19 @@ export class OrdenSuspensionComponent {
     autoTable(doc, {
       theme: 'plain',
       tableWidth: 160,
-      margin: { top: 0, bottom: 0, left: 15 },
+      margin: { top: 50, bottom: 0, left: 25 },
       columnStyles: {
-        0: { cellWidth: 180,halign: 'center' },
+        0: { cellWidth: 160, halign: 'justify' } // Justifica el texto en la columna 0
       },
       styles: {
-        cellPadding: .5, 
+        cellPadding: 1,
+        halign: 'justify', // Esto asegura que el texto en las celdas esté justificado
+        valign: 'top' // Alineación vertical si es necesario
       },
       body: [
-        ['Por este medio y con fundamento en los artículos 14, 16, 27 párrafo quinto, 31 fracción IV, y 115'  ],
-        ['fracción III, inciso a), fracción IV inciso c) de la Constitución Política de los Estados Unidos Mexicanos,'  ],
-        ['al artículo 148 fracción IX inciso a), fracción XVI y 154 fracción VIII de la Constitución Política del Estado'  ],
-        ['Libre y Soberano de Baja California Sur, artículo 1, 2, 3, 21, 24, 25, 27, 97, 116 y 119 de la Ley de Aguas'  ],
-        ['del Estado de Baja California Sur, así como el artículo 1, 2 Fracción X del Decreto de creación, con'  ],
-        ['fecha 30 de junio de 2024, Boletín Oficial del Gobierno del Estado de Baja California Sur, No. 47, tomo'  ],
-        ['LI, Contrato para la Prestación del Servicio de Agua Potable que FACULTA a este Organismo Operador'  ],
-        ['Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de la Paz, Baja California Sur'  ],
-        ['(OOMSAPAS) a suspender por la falta de pago por la prestación de los servicios de agua potable y'  ],
-        ['alcantarillado, en el caso de incumplimiento por parte del usuario dentro de los 3 (tres) días'  ],
-        ['posteriores a la fecha en que fue notificado el importe del consumo correspondiente, basándose en'  ],
-        ['la Clausula Segunda del Contrato para la Prestación del Servicio de Agua Potable firmado con el'  ],
-        ['propietario del inmueble (o usuario del servicio). Asimismo, la falta de pago de las cuotas por servicio,'  ],
-        ['a la fecha de vencimiento, por parte de usuarios no domésticos, FACULTA al Municipio o al prestador'  ],
-        ['de los servicios para suspender los servicios públicos hasta que se regularice su pago.'  ],
+        ['Por este medio y con fundamento en los artículos 14, 16, 27 párrafo quinto, 31 fracción IV, y 115 fracción III, inciso a), fracción IV inciso c) de la Constitución Política de los Estados Unidos Mexicanos al artículo 148 fracción IX inciso a), fracción XVI y 154 fracción VIII de la Constitución Política del Estado Libre y Soberano de Baja California Sur, artículo 1, 2, 3, 21, 24, 25, 27, 97, 116 y 119 de la Ley de Aguas del Estado de Baja California Sur, así como el artículo 1, 2 Fracción X del Decreto de creación, con fecha 30 de junio de 2024, Boletín Oficial del Gobierno del Estado de Baja California Sur, No. 47, tomo LI, Contrato para la Prestación del Servicio de Agua Potable que FACULTA a este Organismo Operador Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de la Paz, Baja California Sur (OOMSAPAS) a suspender por la falta de pago por la prestación de los servicios de agua potable y alcantarillado, en el caso de incumplimiento por parte del usuario dentro de los 3 (tres) días posteriores a la fecha en que fue notificado el importe del consumo correspondiente, basándose en la Clausula Segunda del Contrato para la Prestación del Servicio de Agua Potable firmado con el propietario del inmueble (o usuario del servicio). Asimismo, la falta de pago de las cuotas por servicio, a la fecha de vencimiento, por parte de usuarios no domésticos, FACULTA al Municipio o al prestador de los servicios para suspender los servicios públicos hasta que se regularice su pago.'  ],
         [''  ],
-        ['De acuerdo en lo señalado en el párrafo anterior y al no existir documentos o registro electrónico que'  ],
-        ['acredite el pago de los derechos por los Servicios Públicos en materia de Agua Potable, Alcantarillado'  ],
-        [`y Saneamiento en ${this.usuario.meses} ( ${this.usuario.meses_letra} ) meses, lo cual equivale a la cantidad de`],
-        [`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), situación`  ],
-        [ 'por lo cual se generó la presente orden para realizar la SUSPENSIÓN DEL SERVICIO DE AGUA POTABLE' ],
-        [ 'Y ALCANTARILLADO, hasta que se cubra o regularice la situación de adeudo ante este Organismo' ],
-        [ 'Operador' ],
-
+        [`De acuerdo en lo señalado en el párrafo anterior y al no existir documentos o registro electrónico que acredite el pago de los derechos por los Servicios Públicos en materia de Agua Potable, Alcantarillado y Saneamiento en ${this.usuario.meses} ( ${this.usuario.meses_letra} ) meses, lo cual equivale a la cantidad de $${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), situación por lo cual se generó la presente orden para realizar la SUSPENSIÓN DEL SERVICIO DE AGUA POTABLE Y ALCANTARILLADO, hasta que se cubra o regularice la situación de adeudo ante este Organismo Operador`  ],
       ],
     })   
     
@@ -277,17 +258,25 @@ export class OrdenSuspensionComponent {
     doc.setFontSize(10);
     doc.text(`No. de oficio: DG/DC/OS/${usuario.id}/2024.`, 135, 60 );
     doc.text('Asunto: Orden de Suspensión.', 142, 65 );
-    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 109, 70 );
-
-    doc.text('Para la atención y seguimiento de la presente Orden de Suspensión se pone a disposición la siguiente', 24, 80);
+    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 100, 70 );
 
 
-    doc.text('dirección y teléfono de la Oficina del OOMSAPAS de La Paz, ubicada en Calle Félix Ortega Número 2330', 22, 85);
-    doc.text('e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California Sur, con el teléfono ', 25, 90);
-    doc.text('(612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00 a 14:00 hrs. para ', 24, 95);
-    doc.text('aclarar o cubrir el adeudo.', 85, 100);
-    doc.text('Sin otro particular, quedo a sus órdenes.', 73, 110);
-
+    autoTable(doc, {
+      theme: 'plain',
+      tableWidth: 160,
+      margin: { top: 80, bottom: 0, left: 25 },
+      columnStyles: {
+        0: { cellWidth: 160, halign: 'justify' } // Justifica el texto en la columna 0
+      },
+      styles: {
+        cellPadding: 1,
+        halign: 'justify', // Esto asegura que el texto en las celdas esté justificado
+        valign: 'top' // Alineación vertical si es necesario
+      },
+      body: [
+        ['Para la atención y seguimiento de la presente Orden de Suspensión se pone a disposición la siguiente dirección y teléfono de la Oficina del OOMSAPAS de La Paz, ubicada en Calle Félix Ortega Número 2330 e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California Sur, con el teléfono (612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00 a 14:00 hrs. para aclarar o cubrir el adeudo. Sin otro particular, quedo a sus órdenes.'  ],
+      ],
+    })  
 
     doc.setFont("helvetica", "bold");
 

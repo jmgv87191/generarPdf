@@ -7,7 +7,7 @@ export interface Usuario {
     noCta: string;
     fechaUltPago: string,
     meses:string,
-    adeudo:number,
+    adeudo:string,
     adeudo_letra:string,
     meses_letra: string,
 }

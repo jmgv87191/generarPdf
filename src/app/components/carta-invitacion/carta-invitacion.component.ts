@@ -41,7 +41,7 @@ export class CartaInvitacionComponent {
     noCta: '010101.01',
     fechaUltPago: '27/Sept/2011',
     meses: '133',
-    adeudo: 141306.43,
+    adeudo: '141306.43',
     adeudo_letra:'',
     meses_letra:''
   };
@@ -195,41 +195,33 @@ export class CartaInvitacionComponent {
     doc.text('Carta Invitación.', 166, 54 );
     doc.setFont("helvetica", "normal");
 
-    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 112, 58 );
+    doc.text(`La Paz, Baja California Sur, a ${this.dayOfMonth} de ${this.monthName} de 2024.`, 105, 58 );
 
 
     autoTable(doc, {
       theme: 'plain',
       tableWidth: 160,
-      margin: { top: 50, bottom: 0, left: 15 },
+      margin: { top: 50, bottom: 0, left: 20 },
       columnStyles: {
-        0: { cellWidth: 180,halign: 'center' },
+        0: { cellWidth: 170, halign: 'justify' } // Justifica el texto en la columna 0
       },
       styles: {
-        cellPadding: .5, 
+        cellPadding: 1,
+        halign: 'justify', // Esto asegura que el texto en las celdas esté justificado
+        valign: 'top' // Alineación vertical si es necesario
       },
       body: [
         [''  ],
         [''  ],
-        ['El Organismo Operador Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de La'  ],
-        ['Paz; conocido por sus siglas OOMSAPAS ha identificado en su Sistema Comercial un pasivo de'  ],
-        [`$${this.usuario.adeudo}  (${this.usuario.adeudo_letra  }), de ${this.usuario.meses} meses`  ],
-        ['vencidos por el pago de los servicios de agua potable, alcantarillado y saneamiento.'  ],
+        [`El Organismo Operador Municipal del Sistema de Agua Potable, Alcantarillado y Saneamiento de La Paz; conocido por sus siglas OOMSAPAS ha identificado en su Sistema Comercial un pasivo de $${this.usuario.adeudo} (${this.usuario.adeudo_letra}), de ${this.usuario.meses} meses vencidos por el pago de los servicios de agua potable, alcantarillado y saneamiento.`],
         [''  ],
-        ['Por lo anterior, le hacemos una cordial invitación para acercarse a las oficinas de OOMSAPAS y'  ],
-        ['conocer el monto del adeudo y las alternativas que ofrece el Organismo Operador para realizar el pago'  ],
-        [`de los ${this.usuario.meses} meses identificados, tomando en cuenta sus condiciones de pago.`  ],
+        [`Por lo anterior, le hacemos una cordial invitación para acercarse a las oficinas de OOMSAPAS y conocer el monto del adeudo y las alternativas que ofrece el Organismo Operador para realizar el pago de los ${this.usuario.meses} meses identificados, tomando en cuenta sus condiciones de pago.`],
         [''  ],
-        ['En este sentido, lo esperamos a la brevedad en cualquiera de nuestras oficinas ubicadas en Calle Félix'  ],
-        ['Ortega Número 2330 e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California'  ],
-        ['Sur, con el teléfono (612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00'  ],
-        ['a 14:00 hrs. para aclarar o cubrir el adeudo; en el término de 3 días hábiles después de la recepción de'  ],
-        ['la presente invitación.'  ],
+        ['En este sentido, lo esperamos en cualquiera de nuestras oficinas ubicadas en Calle Félix Ortega Número 2330 e/ Calle Márquez de León y Normal Urbana, Zona Centro, La Paz, Baja California Sur, con el teléfono (612) 12-38600 Ext. 1242, de lunes a viernes de 8:00 a 16:00 hrs. y sábados de 9:00 a 14:00 hrs. para aclarar o cubrir el adeudo; en el término de 3 días hábiles después de la recepción de la presente invitación.'  ],
         [''  ],
-        ['En caso de haber realizado el pago total de los meses identificados con adeudo o estar al corriente en'  ],
-        ['los pagos, omitir el presente documento.'  ],
+        ['En caso de haber realizado el pago total de los meses identificados con adeudo o estar al corriente en los pagos, omitir el presente documento.'  ],
       ],
-    })   
+    });
     
 
     doc.setFont("helvetica", "bold");
