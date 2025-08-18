@@ -33,6 +33,8 @@ export class CartaInvitacionComponent {
   monthName: string;
   cantidadEnTextoMeses!: string;
 
+  spiner:boolean = false;
+
   usuario: Usuario = {
     id: 0,
     name: 'Juan manuel gutierrez',
@@ -129,6 +131,7 @@ export class CartaInvitacionComponent {
           this.generatePDF(this.usuario);
         })
 
+        this.spiner = false
       });
 
   }
@@ -136,7 +139,7 @@ export class CartaInvitacionComponent {
 
 
   sendCveusu() {
-    
+    this.spiner = true
     this.clveusuIngresada = this.form.value.cveusu;
     this.getDatos(this.clveusuIngresada);
     
@@ -184,7 +187,7 @@ export class CartaInvitacionComponent {
 
     doc.setFontSize(6);
 
-    doc.text('"2024, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 35 );
+    doc.text('"2025, AÑO DEL CINCUENTENARIO DE LA CONVERSIÓN DE TERRITORIO FEDERAL A ESTADO LIBRE Y SOBERANO DE BAJA CALIFORNIA SUR"', 50, 35 );
     doc.text('“2024, AÑO DEL 75 ANIVERSARIO DE LA PUBLICACIÓN DEL ACUERDO DE COLONIZACIÓN DEL VALLE DE SANTO DOMINGO”', 69, 38 );
 
     doc.setFontSize(10);
